@@ -3,59 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Jeopardy | 黄瓜一u西</title>
+    <title>Abstract Jeopardy | 终极抽象边缘</title>
     <style>
         body {
-            background-color: #060ce9; /* 经典的 Jeopardy 蓝色 */
+            background-color: #060ce9;
             color: white;
-            font-family: 'Arial Black', 'SimHei', sans-serif;
+            font-family: 'Arial Black', 'SimHei', 'Microsoft YaHei', sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
             margin: 0;
-            text-align: center;
+            overflow-x: hidden;
         }
 
         #game-container {
-            border: 6px solid #ffcc00; /* 标志性的金边 */
-            padding: 50px;
-            width: 85%;
-            max-width: 900px;
+            border: 8px solid #ffcc00;
+            padding: 40px;
+            width: 90%;
+            max-width: 1000px;
             background: #060ce9;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            box-shadow: 15px 15px 0px #000;
+            position: relative;
         }
 
         .category {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             color: #ffcc00;
             text-transform: uppercase;
-            margin-bottom: 20px;
-            letter-spacing: 3px;
-            border-bottom: 2px solid rgba(255,204,0,0.3);
-            padding-bottom: 10px;
+            margin-bottom: 25px;
+            letter-spacing: 4px;
+            border-bottom: 3px solid #ffcc00;
+            display: inline-block;
+            padding: 0 20px 5px 20px;
         }
 
         #question {
-            font-size: 2.8rem;
-            font-weight: bold;
+            font-size: 2.6rem;
+            font-weight: 900;
+            line-height: 1.3;
             margin-bottom: 40px;
-            min-height: 200px;
+            min-height: 220px;
             display: flex;
             align-items: center;
             justify-content: center;
-            text-shadow: 3px 3px 0px #000;
+            text-shadow: 4px 4px 0px #000;
+            word-wrap: break-word;
         }
 
         #answer {
-            font-size: 2.2rem;
+            font-size: 2rem;
             color: #ffcc00;
             background-color: #000;
             visibility: hidden;
             margin-top: 20px;
-            padding: 15px;
-            border: 2px solid white;
+            padding: 20px;
+            border: 3px solid #fff;
+            box-shadow: inset 0 0 10px #ffcc00;
         }
 
         .controls {
@@ -64,50 +69,66 @@
 
         button {
             background-color: #ffcc00;
-            border: 2px solid #fff;
+            border: 3px solid #fff;
             color: #060ce9;
-            padding: 15px 40px;
-            font-size: 1.2rem;
-            font-weight: bold;
+            padding: 18px 45px;
+            font-size: 1.3rem;
+            font-weight: 900;
             cursor: pointer;
             margin: 10px;
-            box-shadow: 4px 4px 0px #000;
-        }
-
-        button:active {
-            transform: translate(2px, 2px);
-            box-shadow: 2px 2px 0px #000;
+            box-shadow: 5px 5px 0px #000;
+            transition: 0.1s;
         }
 
         button:hover {
             background-color: #fff;
+            transform: scale(1.02);
+        }
+
+        button:active {
+            transform: translate(4px, 4px);
+            box-shadow: 1px 1px 0px #000;
+        }
+
+        /* 装饰性背景文字 */
+        .watermark {
+            position: absolute;
+            font-size: 15rem;
+            color: rgba(255, 255, 255, 0.03);
+            z-index: -1;
+            user-select: none;
         }
     </style>
 </head>
 <body>
 
+<div class="watermark" style="top: -50px; left: -50px;">TRUE</div>
+<div class="watermark" style="bottom: -50px; right: -50px;">FALSE</div>
+
 <div id="game-container">
-    <div class="category" id="category-display">分类加载中...</div>
-    <div id="question">准备好迎接逻辑坍缩吗？</div>
+    <div class="category" id="category-display">正在提取维度...</div>
+    <div id="question">正在连接到不可言说之物...</div>
     <div id="answer">-</div>
 
     <div class="controls">
-        <button onclick="revealAnswer()">揭晓答案</button>
-        <button onclick="generateQuestion()">下一题</button>
+        <button onclick="revealAnswer()">揭晓真相</button>
+        <button onclick="generateQuestion()">刷新现实</button>
     </div>
 </div>
 
 <script>
     const abstractData = {
         categories: [
-            "虚无主义者的收纳袋", "非欧几里得生物学", "被遗忘的物理常数", 
-            "语义饱和的灾难", "高纬度社交礼仪", "热力学第二定律的借口",
+            "虚无主义者的收纳袋", "非欧几里得家政学", "被遗忘的物理常数", 
+            "语义饱和的灾难", "高维度社交礼仪", "热力学第二定律的借口",
             "午夜三点的形而上学", "过期逻辑的处理方案", "平行世界的财务纠纷",
-            "碳基生物的集体幻觉", "拒绝承认现实的证据", "无意识的随机漫步"
+            "碳基生物的集体幻觉", "拒绝承认现实的证据", "无意识的随机漫步",
+            "克苏鲁的PPT模版", "修辞学的末日", "人工智能的乡愁", "纯粹理性批判(加长版)",
+            "不可逆的尴尬瞬间", "反物质厨艺大赛", "失重状态下的官僚主义"
         ],
         templates: [
             { q: "你会{verbing}吗？", a: "N/A。在{place}，这被视为一种{concept}。"},
-            { q: "{subject}和{subject2}之间，谁更具有{concept}？", a: "这取决于谁在{time}持有那半个{object}。"},
+            { q: "{subject}和{subject2}之间，谁更具有{concept}？", a: "取决于谁在{time}持有那半个{object}。"},
             { q: "如果{entity}在{time}试图{action}，你该怎么办？", a: "保持{emotion}，并立刻将{object}丢进{place}。"},
             { q: "请解释为什么{place}没有{object}？", a: "因为根据{concept}，它们已经全部转化为{number}个{subject}。"},
             { q: "在{time}，{subject}是否具备{verbing}的资格？", a: "只有当它的{part}被彻底{action_past}之后。"},
@@ -119,22 +140,26 @@
             { q: "如果你能对{time}的自己说一句话，你会说什么？", a: "“不要在{place}触摸那个{object}！”"},
             { q: "这个世界是由什么构成的？", a: "{number}层的{concept}以及少量的{object}。"},
             { q: "为什么{entity}总是喜欢{verbing}？", a: "这是由于它们缺乏足够的{part}来抵抗{concept}。"},
-            { q: "如果{subject}被{action_past}了，它还会疼吗？", a: "只有在{time}，当它回想起那段{emotion}时才会。"}
+            { q: "如果{subject}被{action_past}了，它还会疼吗？", a: "只有在{time}，当它回想起那段{emotion}时才会。"},
+            { q: "请计算{number}个{object}乘以{concept}的结果。", a: "结果是一个在{place}闪烁的{entity}。"},
+            { q: "当你在{place}发现{subject}在{verbing}，这意味着？", a: "意味着你该更新你的{part}了。"},
+            { q: "如果{time}没有发生，{subject}会去哪？", a: "它会去{place}寻找失踪的{object}。"},
+            { q: "这道题的答案是{object}吗？", a: "不，是{number}个正在{verbing}的{entity}。"}
         ],
         words: {
-            time: ["大爆炸发生的前五秒", "周三与周四的裂缝中", "你的工资到账前", "光速变慢的瞬间", "最后一个冰河期", "永恒的午后两点", "所有闹钟同时停止时"],
-            entity: ["穿燕尾服的乌贼", "你的第二人格", "拒绝进化的仙人掌", "平行时空的收银员", "一个会跳舞的质子", "过期的数字灵魂", "隐藏在字典里的刺客"],
-            action: ["重构宇宙代码", "离线升级你的DNA", "涂抹现实的边缘", "解析一朵云的潜意识", "删除昨天的所有缓存", "与虚无进行商业谈判"],
-            action_past: ["格式化", "被降维打击", "腌制", "煮成了一锅逻辑汤", "折叠成五角星", "被翻译成了乱码", "质押给了未来"],
-            object: ["半个圆周率", "电子羊的梦境回放", "生锈的直觉", "404错误的残骸", "一克重的寂静", "过期的通行证", "无主的公钥", "一打抽象的叹息"],
-            subject: ["你的影子", "这行代码", "绝对零度", "达芬奇的草稿本", "你还没洗的袜子", "因果律的漏洞", "被遗忘的单词"],
-            subject2: ["薛定谔的盒饭", "你前任的逻辑", "没信号的WiFi", "还没发生的灾难", "空气中的几何学", "宇宙的底色"],
-            concept: ["莫比乌斯环式的尴尬", "低级审美趣味", "量子态的犹豫", "数字化的乡愁", "熵减的幻觉", "多维空间的违章建筑", "一种不可名状的空虚"],
-            part: ["审美阈值", "逻辑死角", "右侧的灵魂", "发际线", "记忆备份", "多余的道德感", "对重力的依赖"],
-            place: ["回收站的底层", "书页的缝隙", "没信号的电梯里", "潜意识的后厨房", "某人的备注栏", "黑洞的边缘", "一张过期的彩票里"],
-            verbing: ["呼吸数字化", "解析星光", "交易你的梦境", "给黑洞打包", "计算云朵的重量", "离线升级", "在真空中游泳"],
-            number: ["√-1", "42", "趋近于零的无穷", "0.333个", "一打半", "e的iπ次方", "九分之八个"],
-            emotion: ["电子式的忧伤", "极其理智的狂喜", "像素化的迷茫", "无氧运动后的宁静", "一种很新的疲惫", "无法导出的愤怒"]
+            time: ["大爆炸前五秒", "周三与周四的缝隙", "工资到账前", "光速变慢的瞬间", "最后一个冰河期", "永恒的午后", "闹钟停止时", "公元前0.5年", "你犹豫的瞬间", "所有镜子破裂那天", "由于天气原因被取消的明天"],
+            entity: ["穿燕尾服的乌贼", "你的第二人格", "拒绝进化的仙人掌", "平行时空的收银员", "会跳舞的质子", "过期的数字灵魂", "隐藏在字典里的刺客", "正在写代码的猫", "没有任何属性的NPC", "一个装满沉默的瓶子", "名为“错误”的实体"],
+            action: ["重构宇宙代码", "离线升级DNA", "涂抹现实边缘", "解析云的潜意识", "删除昨天缓存", "与虚无谈判", "翻译风的呼吸", "给黑洞安装补丁", "在虚数空间垂钓", "寻找逻辑的尽头"],
+            action_past: ["被格式化", "被降维打击", "被煮成了逻辑汤", "被折叠成五角星", "被翻译成乱码", "被质押给未来", "被当作垃圾分类", "被不可见的力量抹除", "被腌制成记忆"],
+            object: ["半个圆周率", "电子羊的梦", "生锈的直觉", "404错误的残骸", "一克重的寂静", "过期的通行证", "无主的公钥", "一打抽象的叹息", "被遗忘的登录密码", "半截消失的梯子", "具有社交恐惧症的夸克"],
+            subject: ["你的影子", "这行代码", "绝对零度", "达芬奇的草稿", "你还没洗的袜子", "因果律的漏洞", "被遗忘的单词", "整个宇宙的备忘录", "此时此刻的直觉", "你丢失的睡眠"],
+            subject2: ["薛定谔的盒饭", "你前任的逻辑", "没信号的WiFi", "还没发生的灾难", "空气中的几何学", "宇宙的底色", "这个问题的本身", "被屏蔽的关键词"],
+            concept: ["莫比乌斯环式的尴尬", "低级审美趣味", "量子态的犹豫", "数字化的乡愁", "熵减的幻觉", "多维空间违章建筑", "不可名状的空虚", "语义的缓慢死亡", "逻辑的回光返照", "一场华丽的系统错误"],
+            part: ["审美阈值", "逻辑死角", "右侧的灵魂", "发际线", "记忆备份", "多余的道德感", "对重力的依赖", "你的童年滤镜", "用来分辨真伪的嗅觉"],
+            place: ["回收站底层", "书页缝隙", "没信号的电梯", "潜意识后厨房", "某人的备注栏", "黑洞边缘", "一张过期彩票里", "你大脑的盲区", "未渲染的贴图后面", "五维空间的垃圾场"],
+            verbing: ["呼吸数字化", "解析星光", "交易梦境", "给黑洞打包", "计算云的重量", "离线升级", "在真空中游泳", "编织因果", "对抗热寂", "在原地递归"],
+            number: ["√-1", "42", "趋近于零的无穷", "0.333个", "一打半", "e的iπ次方", "九分之八个", "无法计算的常数", "刚好足够引起爆炸的份量"],
+            emotion: ["电子式忧伤", "理智的狂喜", "像素化迷茫", "无氧运动后的宁静", "一种很新的疲惫", "无法导出的愤怒", "跨维度的思乡病", "由于逻辑自洽导致的舒适感"]
         }
     };
 
@@ -150,7 +175,7 @@
         const regex = /\{([^}]+)\}/g;
         const currentContext = {};
 
-        // 统一上下文，确保问题和答案里的词能对上
+        // 统一上下文
         const finalQ = qText.replace(regex, (match, key) => {
             if(!currentContext[key]) currentContext[key] = getRandom(abstractData.words[key]);
             return currentContext[key];
@@ -170,7 +195,6 @@
         document.getElementById('answer').style.visibility = 'visible';
     }
 
-    // 页面加载时生成第一个
     window.onload = generateQuestion;
 </script>
 
