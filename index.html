@@ -3,112 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>抽象 Jeopardy</title>
+    <title> Jeopardy | 黄瓜一u西</title>
     <style>
         body {
-            background-color: #060ce9;
+            background-color: #060ce9; /* 经典的 Jeopardy 蓝色 */
             color: white;
-            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            font-family: 'Arial Black', 'SimHei', sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
             text-align: center;
         }
+
         #game-container {
-            border: 4px solid #ffcc00;
-            padding: 40px;
-            max-width: 80%;
-            background: rgba(0, 0, 0, 0.2);
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            border: 6px solid #ffcc00; /* 标志性的金边 */
+            padding: 50px;
+            width: 85%;
+            max-width: 900px;
+            background: #060ce9;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
+
         .category {
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             color: #ffcc00;
             text-transform: uppercase;
-            margin-bottom: 10px;
-            letter-spacing: 2px;
+            margin-bottom: 20px;
+            letter-spacing: 3px;
+            border-bottom: 2px solid rgba(255,204,0,0.3);
+            padding-bottom: 10px;
         }
+
         #question {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             font-weight: bold;
-            margin-bottom: 30px;
-            min-height: 120px;
+            margin-bottom: 40px;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-shadow: 3px 3px 0px #000;
         }
+
         #answer {
-            font-size: 2rem;
-            color: #00ff00;
+            font-size: 2.2rem;
+            color: #ffcc00;
+            background-color: #000;
             visibility: hidden;
             margin-top: 20px;
-            padding: 10px;
-            border-top: 1px solid rgba(255,255,255,0.2);
+            padding: 15px;
+            border: 2px solid white;
         }
+
+        .controls {
+            margin-top: 40px;
+        }
+
         button {
             background-color: #ffcc00;
-            border: none;
+            border: 2px solid #fff;
             color: #060ce9;
-            padding: 15px 30px;
-            font-size: 1rem;
+            padding: 15px 40px;
+            font-size: 1.2rem;
             font-weight: bold;
             cursor: pointer;
             margin: 10px;
-            transition: transform 0.1s;
+            box-shadow: 4px 4px 0px #000;
         }
+
+        button:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px #000;
+        }
+
         button:hover {
-            transform: scale(1.05);
             background-color: #fff;
         }
-        .controls { margin-top: 30px; }
     </style>
 </head>
 <body>
 
 <div id="game-container">
-    <div class="category" id="category-display">领域：未定义</div>
-    <div id="question">正在连接集体潜意识...</div>
-    <div id="answer">等待观察者...</div>
+    <div class="category" id="category-display">分类加载中...</div>
+    <div id="question">准备好迎接逻辑坍缩吗？</div>
+    <div id="answer">-</div>
 
     <div class="controls">
         <button onclick="revealAnswer()">揭晓答案</button>
-        <button onclick="generateQuestion()">下一个悖论</button>
+        <button onclick="generateQuestion()">下一题</button>
     </div>
 </div>
 
 <script>
     const abstractData = {
-        categories: ["时间形态学", "语言的废墟", "非物质逻辑", "社交热寂"],
+        categories: [
+            "虚无主义者的收纳袋", "非欧几里得生物学", "被遗忘的物理常数", 
+            "语义饱和的灾难", "高纬度社交礼仪", "热力学第二定律的借口",
+            "午夜三点的形而上学", "过期逻辑的处理方案", "平行世界的财务纠纷",
+            "碳基生物的集体幻觉", "拒绝承认现实的证据", "无意识的随机漫步"
+        ],
         templates: [
-            {
-                q: "如果你在{time}遇见了{entity}，你应该{action}吗？",
-                a: "看情况，取决于{entity}是否携带了{object}。"
-            },
-            {
-                q: "{subject}的本质是{concept}，那么它的{part}去哪了？",
-                a: "被{action_past}了，就在{place}。"
-            },
-            {
-                q: "你会{verbing}吗？",
-                a: "N/A（因为该行为在{place}是不存在的物理量）。"
-            },
-            {
-                q: "当{entity}开始{verbing}，{number}个{object}会发生什么？",
-                a: "它们会坍缩成一个{concept}。"
-            }
+            { q: "你会{verbing}吗？", a: "N/A。在{place}，这被视为一种{concept}。"},
+            { q: "{subject}和{subject2}之间，谁更具有{concept}？", a: "这取决于谁在{time}持有那半个{object}。"},
+            { q: "如果{entity}在{time}试图{action}，你该怎么办？", a: "保持{emotion}，并立刻将{object}丢进{place}。"},
+            { q: "请解释为什么{place}没有{object}？", a: "因为根据{concept}，它们已经全部转化为{number}个{subject}。"},
+            { q: "在{time}，{subject}是否具备{verbing}的资格？", a: "只有当它的{part}被彻底{action_past}之后。"},
+            { q: "{entity}的影子通常呈现什么形状？", a: "一种类似于{emotion}感的{concept}结构。"},
+            { q: "当{subject}遇见{entity}，空气中会弥漫什么味道？", a: "一股被{action_past}过的{object}味。"},
+            { q: "如何用{number}个字形容{concept}？", a: "“{object}在{place}{verbing}”。"},
+            { q: "如果你的{part}突然变成了{object}，你会选择？", a: "我会选择在{time}通过{action}来弥补。"},
+            { q: "是谁在{place}里偷走了{subject}？", a: "是你那尚未出生的{entity}，它想用它交换{number}份{concept}。"},
+            { q: "如果你能对{time}的自己说一句话，你会说什么？", a: "“不要在{place}触摸那个{object}！”"},
+            { q: "这个世界是由什么构成的？", a: "{number}层的{concept}以及少量的{object}。"},
+            { q: "为什么{entity}总是喜欢{verbing}？", a: "这是由于它们缺乏足够的{part}来抵抗{concept}。"},
+            { q: "如果{subject}被{action_past}了，它还会疼吗？", a: "只有在{time}，当它回想起那段{emotion}时才会。"}
         ],
         words: {
-            time: ["昨天之后", "永恒的午后", "三秒钟的裂缝", "未曾发生的周三"],
-            entity: ["影子", "虚无", "你的第二个自我", "沉默的闹钟", "概念本身"],
-            action: ["拒绝", "拆解", "深呼吸", "转化为碳酸锂"],
-            action_past: ["格式化", "放逐", "折叠", "涂抹"],
-            object: ["蓝色的声音", "逻辑碎片", "过期的呼吸", "半个圆周率"],
-            subject: ["记忆", "电梯", "因果关系", "这个提问"],
-            concept: ["熵增", "递归", "不可言说", "多余的留白"],
-            part: ["阴影", "后缀", "重量", "道德感"],
-            place: ["镜子的背面", "字典的第0页", "云朵的缝隙", "你的记忆盲点"],
-            verbing: ["过生日", "思考颜色", "触摸虚线", "翻译沉默"],
-            number: ["0.5", "π", "无数", "负一"]
+            time: ["大爆炸发生的前五秒", "周三与周四的裂缝中", "你的工资到账前", "光速变慢的瞬间", "最后一个冰河期", "永恒的午后两点", "所有闹钟同时停止时"],
+            entity: ["穿燕尾服的乌贼", "你的第二人格", "拒绝进化的仙人掌", "平行时空的收银员", "一个会跳舞的质子", "过期的数字灵魂", "隐藏在字典里的刺客"],
+            action: ["重构宇宙代码", "离线升级你的DNA", "涂抹现实的边缘", "解析一朵云的潜意识", "删除昨天的所有缓存", "与虚无进行商业谈判"],
+            action_past: ["格式化", "被降维打击", "腌制", "煮成了一锅逻辑汤", "折叠成五角星", "被翻译成了乱码", "质押给了未来"],
+            object: ["半个圆周率", "电子羊的梦境回放", "生锈的直觉", "404错误的残骸", "一克重的寂静", "过期的通行证", "无主的公钥", "一打抽象的叹息"],
+            subject: ["你的影子", "这行代码", "绝对零度", "达芬奇的草稿本", "你还没洗的袜子", "因果律的漏洞", "被遗忘的单词"],
+            subject2: ["薛定谔的盒饭", "你前任的逻辑", "没信号的WiFi", "还没发生的灾难", "空气中的几何学", "宇宙的底色"],
+            concept: ["莫比乌斯环式的尴尬", "低级审美趣味", "量子态的犹豫", "数字化的乡愁", "熵减的幻觉", "多维空间的违章建筑", "一种不可名状的空虚"],
+            part: ["审美阈值", "逻辑死角", "右侧的灵魂", "发际线", "记忆备份", "多余的道德感", "对重力的依赖"],
+            place: ["回收站的底层", "书页的缝隙", "没信号的电梯里", "潜意识的后厨房", "某人的备注栏", "黑洞的边缘", "一张过期的彩票里"],
+            verbing: ["呼吸数字化", "解析星光", "交易你的梦境", "给黑洞打包", "计算云朵的重量", "离线升级", "在真空中游泳"],
+            number: ["√-1", "42", "趋近于零的无穷", "0.333个", "一打半", "e的iπ次方", "九分之八个"],
+            emotion: ["电子式的忧伤", "极其理智的狂喜", "像素化的迷茫", "无氧运动后的宁静", "一种很新的疲惫", "无法导出的愤怒"]
         }
     };
 
@@ -121,18 +147,22 @@
         let qText = template.q;
         let aText = template.a;
 
-        // 填充占位符
-        const regex = /\{(\split|[^}]+)\}/g;
+        const regex = /\{([^}]+)\}/g;
+        const currentContext = {};
+
+        // 统一上下文，确保问题和答案里的词能对上
+        const finalQ = qText.replace(regex, (match, key) => {
+            if(!currentContext[key]) currentContext[key] = getRandom(abstractData.words[key]);
+            return currentContext[key];
+        });
         
-        const replaceWords = (str) => {
-            return str.replace(regex, (match, key) => {
-                return getRandom(abstractData.words[key] || ["未知"]);
-            });
-        };
+        const finalA = aText.replace(regex, (match, key) => {
+            return currentContext[key] || getRandom(abstractData.words[key]);
+        });
 
         document.getElementById('category-display').innerText = "领域：" + getRandom(abstractData.categories);
-        document.getElementById('question').innerText = replaceWords(qText);
-        document.getElementById('answer').innerText = replaceWords(aText);
+        document.getElementById('question').innerText = finalQ;
+        document.getElementById('answer').innerText = finalA;
         document.getElementById('answer').style.visibility = 'hidden';
     }
 
@@ -140,8 +170,8 @@
         document.getElementById('answer').style.visibility = 'visible';
     }
 
-    // 初始化第一个问题
-    generateQuestion();
+    // 页面加载时生成第一个
+    window.onload = generateQuestion;
 </script>
 
 </body>
