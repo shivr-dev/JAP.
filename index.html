@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>抽象 Jeopardy</title>
+    <style>
+        body {
+            background-color: #060ce9;
+            color: white;
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        #game-container {
+            border: 4px solid #ffcc00;
+            padding: 40px;
+            max-width: 80%;
+            background: rgba(0, 0, 0, 0.2);
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+        .category {
+            font-size: 1.2rem;
+            color: #ffcc00;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+        #question {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 30px;
+            min-height: 120px;
+        }
+        #answer {
+            font-size: 2rem;
+            color: #00ff00;
+            visibility: hidden;
+            margin-top: 20px;
+            padding: 10px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+        button {
+            background-color: #ffcc00;
+            border: none;
+            color: #060ce9;
+            padding: 15px 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px;
+            transition: transform 0.1s;
+        }
+        button:hover {
+            transform: scale(1.05);
+            background-color: #fff;
+        }
+        .controls { margin-top: 30px; }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <div class="category" id="category-display">领域：未定义</div>
+    <div id="question">正在连接集体潜意识...</div>
+    <div id="answer">等待观察者...</div>
+
+    <div class="controls">
+        <button onclick="revealAnswer()">揭晓答案</button>
+        <button onclick="generateQuestion()">下一个悖论</button>
+    </div>
+</div>
+
+<script>
+    const abstractData = {
+        categories: ["时间形态学", "语言的废墟", "非物质逻辑", "社交热寂"],
+        templates: [
+            {
+                q: "如果你在{time}遇见了{entity}，你应该{action}吗？",
+                a: "看情况，取决于{entity}是否携带了{object}。"
+            },
+            {
+                q: "{subject}的本质是{concept}，那么它的{part}去哪了？",
+                a: "被{action_past}了，就在{place}。"
+            },
+            {
+                q: "你会{verbing}吗？",
+                a: "N/A（因为该行为在{place}是不存在的物理量）。"
+            },
+            {
+                q: "当{entity}开始{verbing}，{number}个{object}会发生什么？",
+                a: "它们会坍缩成一个{concept}。"
+            }
+        ],
+        words: {
+            time: ["昨天之后", "永恒的午后", "三秒钟的裂缝", "未曾发生的周三"],
+            entity: ["影子", "虚无", "你的第二个自我", "沉默的闹钟", "概念本身"],
+            action: ["拒绝", "拆解", "深呼吸", "转化为碳酸锂"],
+            action_past: ["格式化", "放逐", "折叠", "涂抹"],
+            object: ["蓝色的声音", "逻辑碎片", "过期的呼吸", "半个圆周率"],
+            subject: ["记忆", "电梯", "因果关系", "这个提问"],
+            concept: ["熵增", "递归", "不可言说", "多余的留白"],
+            part: ["阴影", "后缀", "重量", "道德感"],
+            place: ["镜子的背面", "字典的第0页", "云朵的缝隙", "你的记忆盲点"],
+            verbing: ["过生日", "思考颜色", "触摸虚线", "翻译沉默"],
+            number: ["0.5", "π", "无数", "负一"]
+        }
+    };
+
+    function getRandom(arr) {
+        return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function generateQuestion() {
+        const template = getRandom(abstractData.templates);
+        let qText = template.q;
+        let aText = template.a;
+
+        // 填充占位符
+        const regex = /\{(\split|[^}]+)\}/g;
+        
+        const replaceWords = (str) => {
+            return str.replace(regex, (match, key) => {
+                return getRandom(abstractData.words[key] || ["未知"]);
+            });
+        };
+
+        document.getElementById('category-display').innerText = "领域：" + getRandom(abstractData.categories);
+        document.getElementById('question').innerText = replaceWords(qText);
+        document.getElementById('answer').innerText = replaceWords(aText);
+        document.getElementById('answer').style.visibility = 'hidden';
+    }
+
+    function revealAnswer() {
+        document.getElementById('answer').style.visibility = 'visible';
+    }
+
+    // 初始化第一个问题
+    generateQuestion();
+</script>
+
+</body>
+</html>
